@@ -1,0 +1,13 @@
+#!/usr/bin/env lua
+local input = ...
+assert(input)
+local tl = require("tl")
+local res = assert(tl.process(input))
+if #res.syntax_errors > 0 then
+	io.stderr:write("Syntax Errors:\n")
+	for _, e in ipairs(res.syntax_errors) do
+		io.stderr:write(e.filename, ":", e.y, ":", e.x, ": ", (e.msg or ""), "\n")
+	end
+	os.exit(1)
+end
+io.write(tl.pretty_print_ast(res.ast) .. "\n")
