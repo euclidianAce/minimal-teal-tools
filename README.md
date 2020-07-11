@@ -7,7 +7,7 @@ Ideally this is a testament to how nice the api `tl` provides that we can write 
 
 ## Current Tools
 
-- compile: writes the compiled output of a file to stdout.
+- compile: writes the compiled output of a single file to stdout.
 - typecheck: type checks a single file.
 
 Basically, the following are equivalent to the `tl` cli
@@ -28,6 +28,11 @@ Each tool can only take one argument. Following the unix philosophy, compose the
 tl check foo.tl bar.tl baz.tl
 # in bash would be done as
 for file in {foo.tl,bar.tl,baz.tl}; do typecheck $file; done
+```
+```
+tl gen *.tl
+# in bash would be done as
+for file in *.tl; do compile $file > $(echo $file | cut -d'.' -f1).lua; done
 ```
 
 ## Making new tools
