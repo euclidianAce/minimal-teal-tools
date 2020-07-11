@@ -1,15 +1,15 @@
 #!/usr/bin/env lua
-local input = ...
-assert(input)
+local input = assert(...)
 local tl = require("tl")
 local res = assert(tl.process(input))
-local function report_errors(category, errors)
+local esc = string.char(27) .. "["
+local function report_errors(color, category, errors)
 	if #errors == 0 then return end
 	for _, e in ipairs(errors) do
-		io.stderr:write(category, ":", e.filename, ":", e.y, ":", e.x, ": ", (e.msg or ""), "\n")
+		io.stderr:write(esc, color, ";1m", category, esc, "0m:", e.filename, ":", e.y, ":", e.x, ": ", (e.msg or ""), "\n")
 	end
 	os.exit(1)
 end
-report_errors(string.char(27) .. "[31;1msyntax" .. string.char(27) .. "[0m", res.syntax_errors)
-report_errors(string.char(27) .. "[37;1munknown" .. string.char(27) .. "[0m", res.unknowns)
-report_errors(string.char(27) .. "[36;1mtype" .. string.char(27) .. "[0m", res.type_errors)
+report_errors(31, "syntax", res.syntax_errors)
+report_errors(37, "unknown", res.unknowns)
+report_errors(36, "type", res.type_errors)

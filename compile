@@ -3,11 +3,10 @@ local input = ...
 assert(input)
 local tl = require("tl")
 local res = assert(tl.process(input))
-if #res.syntax_errors > 0 then
-	io.stderr:write("Syntax Errors:\n")
-	for _, e in ipairs(res.syntax_errors) do
-		io.stderr:write(e.filename, ":", e.y, ":", e.x, ": ", (e.msg or ""), "\n")
-	end
-	os.exit(1)
+local errs, stub = #res.syntax_errors > 0, function() end
+(errs and io.stderr.write or stub)(io.stderr, "Syntax Errors:\n")
+for _, e in ipairs(res.syntax_errors) do
+	io.stderr:write(e.filename, ":", e.y, ":", e.x, ": ", (e.msg or ""), "\n")
 end
+(errs and os.exit or stub)(1)
 io.write(tl.pretty_print_ast(res.ast) .. "\n")
