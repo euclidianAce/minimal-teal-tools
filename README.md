@@ -11,25 +11,25 @@ Ideally this is a testament to how nice the api `tl` provides that we can write 
 - typecheck: type checks a single file.
 
 Basically, the following are equivalent to the `tl` cli
-```
+```sh
 compile foo.tl > foo.lua
 # is equivalent to
 tl gen foo.tl
 ```
 
-```
+```sh
 typecheck foo.tl
 # is equivalent to
 tl check foo.tl
 ```
 
 Each tool can only take one argument. Following the unix philosophy, compose the tools available to you to get the desired behavior.
-```
+```sh
 tl check foo.tl bar.tl baz.tl
 # in bash would be done as
 for file in {foo.tl,bar.tl,baz.tl}; do typecheck $file; done
 ```
-```
+```sh
 tl gen *.tl
 # in bash would be done as
 for file in *.tl; do compile $file > $(echo $file | cut -d'.' -f1).lua; done
